@@ -6,13 +6,37 @@ HotPath is a small rule-based CLI for detecting common PyTorch performance
 anti-patterns. The v0 focuses on high-confidence checks that are easy to explain
 and usually easy to fix.
 
+> Package note: the PyPI name `hotpath` is used by an unrelated project.
+> This project publishes as `hotpath-ai`, while the command remains `hotpath`.
+
+## Why HotPath
+
+GPU profilers are powerful, but they often show you traces after money has
+already been spent. HotPath catches common PyTorch performance mistakes before
+long training runs, CI jobs, or expensive experiments start.
+
+Use it when you want to spot:
+
+- CPU/GPU synchronization traps like `.item()` in hot loops
+- slow input pipelines from underconfigured `DataLoader`s
+- blocking device transfers
+- missing mixed precision or `torch.compile`
+- checkpointing and conversion work inside training loops
+
 ## Quick Start
 
 ```bash
 python -m hotpath analyze examples/slow_training.py
 ```
 
-Or after installing locally:
+Install from PyPI:
+
+```bash
+pip install hotpath-ai
+hotpath analyze examples/slow_training.py
+```
+
+Or after installing locally from this repo:
 
 ```bash
 pip install -e .
@@ -68,11 +92,30 @@ hotpath analyze path/to/project --fail-on warning
   Try optimizer.zero_grad(set_to_none=True).
 ```
 
+## GitHub Topics
+
+Recommended repository topics:
+
+`pytorch`, `cuda`, `gpu`, `gpu-optimization`, `performance`, `profiling`,
+`static-analysis`, `linting`, `machine-learning`, `deep-learning`, `mlops`,
+`ai-tools`, `developer-tools`, `training`, `torch`, `triton`
+
 ## Philosophy
 
 HotPath is intentionally not a magic kernel generator yet. The first product
 is the GPU performance linter experts wish existed: clear detections,
 plain-English explanations, and copy-pasteable fixes.
+
+## PyPI Name
+
+The installable package name is `hotpath-ai` because `hotpath` is already used
+by an unrelated PyPI project. The Python import package and command-line entry
+point are still `hotpath`:
+
+```bash
+pip install hotpath-ai
+hotpath analyze path/to/project
+```
 
 ## Roadmap
 
